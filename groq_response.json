@@ -1,0 +1,159 @@
+{
+  "analysis": {
+      "topic": "Lions and Wildlife",
+      "audience": "Wildlife Enthusiasts and Conservationists",
+      "mood": "Educational and Informative"
+   },
+   "creativeBrief": {
+      "direction": "To raise awareness about lion conservation and the importance of preserving wildlife habitats",
+      "emotionalGoal": "To inspire viewers to take action in protecting lions and their ecosystems"
+   },
+   "moodboard": {
+      "primaryColors": [
+         "Purple",
+         "Blue"
+      ],
+      "texture": "Savannah Grass"
+   },
+   "designDNA": {
+      "typographyPairing": "Playfair/Inter",
+      "pageNumberPosition": "bottom-right",
+      "pageNumberStyle": "minimal",
+      "showPageNumbers": true,
+      "showBrandFooter": true,
+      "brandText": "Wildlife Conservation Society",
+      "decorativeBorder": "thin-inner"
+   },
+   "storyPlan": [
+      {
+         "id": "slide-1",
+         "role": "Hook"
+      },
+      {
+         "id": "slide-2",
+         "role": "Problem"
+      },
+      {
+         "id": "slide-3",
+         "role": "Solution"
+      },
+      {
+         "id": "slide-4",
+         "role": "Call-to-Action"
+      }
+   ],
+   "slides": [
+      {
+         "id": "slide-1",
+         "role": "Hook",
+         "strategy": {
+            "visualizationMethod": "Hero Photography",
+            "imagePrompt": "A majestic lion in its natural habitat with a subtle purple and blue tone",
+            "imageKeywords": [
+               "Lion",
+               "Savannah",
+               "Wildlife"
+            ]
+         },
+         "blocks": [
+            {
+               "type": "HeroHeading",
+               "props": {
+                  "text": "The King of the Savannah: Lion Conservation"
+               }
+            }
+         ]
+      },
+      {
+         "id": "slide-2",
+         "role": "Problem",
+         "strategy": {
+            "visualizationMethod": "Typography Poster",
+            "imagePrompt": "A dramatic typography-based design highlighting the decline of lion populations",
+            "imageKeywords": [
+               "Lion",
+               "Population Decline",
+               "Conservation"
+            ]
+         },
+         "blocks": [
+            {
+               "type": "SectionHeading",
+               "props": {
+                  "text": "The Decline of Lion Populations: A Growing Concern"
+               }
+            },
+            {
+               "type": "Paragraph",
+               "props": {
+                  "text": "Lion populations have been declining due to habitat loss, human-wildlife conflict, and poaching. It's essential to address these issues to ensure the long-term survival of lions."
+               }
+            }
+         ]
+      },
+      {
+         "id": "slide-3",
+         "role": "Solution",
+         "strategy": {
+            "visualizationMethod": "Split Bento",
+            "imagePrompt": "A split-screen design showcasing lion conservation efforts and the impact of community involvement",
+            "imageKeywords": [
+               "Lion Conservation",
+               "Community Involvement",
+               "Wildlife Preservation"
+            ]
+         },
+         "blocks": [
+            {
+               "type": "HighlightCard",
+               "props": {
+                  "title": "Conservation Efforts",
+                  "subtitle": "Protecting Lion Habitats and Preventing Human-Wildlife Conflict"
+               }
+            },
+            {
+               "type": "StatisticCard",
+               "props": {
+                  "number": "80%",
+                  "label": "Increase in Lion Populations due to Conservation Efforts"
+               }
+            }
+         ]
+      },
+      {
+         "id": "slide-4",
+         "role": "Call-to-Action",
+         "strategy": {
+            "visualizationMethod": "Hero Photography",
+            "imagePrompt": "A powerful image of a lion with a call-to-action to support conservation efforts",
+            "imageKeywords": [
+               "Lion",
+               "Conservation",
+               "Support"
+            ]
+         },
+         "blocks": [
+            {
+               "type": "HeroHeading",
+               "props": {
+                  "text": "Join the Movement: Support Lion Conservation Today"
+               }
+            },
+            {
+               "type": "Paragraph",
+               "props": {
+                  "text": "Every contribution counts, and together we can make a difference in the lives of lions and their habitats. Donate now and help us protect these majestic creatures."
+               }
+            }
+         ]
+      }
+   ],
+   "caption": "Learn about the importance of lion conservation and how you can make a difference. Join the movement and support wildlife preservation efforts. #LionConservation #WildlifePreservation #Savannah",
+   "hashtags": [
+      "LionConservation",
+      "WildlifePreservation",
+      "Savannah",
+      "ConservationEfforts",
+      "WildlifeEnthusiasts"
+   ]
+}

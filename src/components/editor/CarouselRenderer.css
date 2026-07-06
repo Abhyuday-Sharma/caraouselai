@@ -1,0 +1,77 @@
+.carousel-renderer-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  /* Use container queries for fluid typography scaling inside the slide */
+  container-type: inline-size;
+  container-name: carousel-slide;
+}
+
+.slide-canvas {
+  /* Enforce Instagram Portrait Ratio 4:5 */
+  aspect-ratio: 4 / 5;
+  
+  /* Make height responsive to container, but bound by max heights */
+  max-height: 100%;
+  max-width: 100%;
+  height: 100%;
+  
+  /* Base structural styling */
+  background-color: var(--sys-bg);
+  background-image: var(--sys-bg-glow);
+  color: var(--sys-text);
+  font-family: var(--sys-font-body);
+  
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  position: relative;
+  
+  /* Set up a baseline font size that scales with container width (cqw) */
+  /* This ensures the slide looks IDENTICAL regardless of screen size */
+  font-size: clamp(10px, 2.2cqw, 20px);
+  
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Base styles for all slides inside the canvas */
+.slide-inner {
+  padding: 10%; /* Relative padding */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 10;
+}
+
+.slide-canvas h1, .slide-canvas h2, .slide-canvas h3 {
+  font-family: var(--sys-font-heading);
+  color: var(--sys-text);
+  margin: 0;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.slide-canvas p {
+  line-height: 1.5;
+  color: var(--sys-text-muted);
+}
+
+.slide-glass-card {
+  background: var(--sys-card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--sys-radius-lg);
+  box-shadow: var(--sys-shadow-soft);
+  padding: 8%;
+}
+
+.slide-accent-text {
+  color: var(--sys-accent);
+}
