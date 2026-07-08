@@ -8,28 +8,31 @@ import CarouselRenderer from '../components/editor/CarouselRenderer';
  * Renders each slide off-screen to a fixed 800x1000 viewport,
  * captures it via html2canvas, and compiles a multi-page PDF.
  */
-export async function exportToPDF(slides, designSystem, filename = 'carousel.pdf') {
+export async function exportToPDF(slides, designSystem, filename = 'carousel.pdf', aspectRatio = '4:5') {
+  const width = 800;
+  const height = aspectRatio === '1:1' ? 800 : 1000;
+
   const container = document.createElement('div');
   container.style.position = 'fixed';
   container.style.top = '-9999px';
   container.style.left = '-9999px';
-  container.style.width = '800px';
-  container.style.height = '1000px';
+  container.style.width = `${width}px`;
+  container.style.height = `${height}px`;
   document.body.appendChild(container);
 
   const root = createRoot(container);
   const doc = new jsPDF({
-    orientation: 'portrait',
+    orientation: aspectRatio === '1:1' ? 'landscape' : 'portrait',
     unit: 'px',
-    format: [800, 1000]
+    format: [width, height]
   });
 
   try {
     for (let i = 0; i < slides.length; i++) {
       await new Promise((resolve) => {
         root.render(
-          <div style={{ width: '800px', height: '1000px', position: 'relative' }}>
-            <CarouselRenderer slide={slides[i]} designSystem={designSystem} />
+          <div style={{ width: `${width}px`, height: `${height}px`, position: 'relative' }}>
+            <CarouselRenderer slide={slides[i]} designSystem={designSystem} aspectRatio={aspectRatio} />
           </div>
         );
         // Wait for React to mount and layout components
@@ -40,9 +43,9 @@ export async function exportToPDF(slides, designSystem, filename = 'carousel.pdf
       if (!canvasElement) continue;
 
       const canvas = await html2canvas(canvasElement, {
-        width: 800,
-        height: 1000,
-        scale: 2, // 2x crisp scale (1600x2000 px)
+        width: width,
+        height: height,
+        scale: 2, // 2x crisp scale (1600x2000 px or 1600x1600 px)
         useCORS: true,
         allowTaint: true,
         backgroundColor: null
@@ -51,9 +54,9 @@ export async function exportToPDF(slides, designSystem, filename = 'carousel.pdf
       const imgData = canvas.toDataURL('image/png');
       
       if (i > 0) {
-        doc.addPage([800, 1000], 'portrait');
+        doc.addPage([width, height], aspectRatio === '1:1' ? 'landscape' : 'portrait');
       }
-      doc.addImage(imgData, 'PNG', 0, 0, 800, 1000);
+      doc.addImage(imgData, 'PNG', 0, 0, width, height);
     }
 
     doc.save(filename);
@@ -69,13 +72,16 @@ export async function exportToPDF(slides, designSystem, filename = 'carousel.pdf
 /**
  * Renders each slide off-screen and triggers sequential PNG downloads.
  */
-export async function exportToPNGs(slides, designSystem, topicName = 'carousel') {
+export async function exportToPNGs(slides, designSystem, topicName = 'carousel', aspectRatio = '4:5') {
+  const width = 800;
+  const height = aspectRatio === '1:1' ? 800 : 1000;
+
   const container = document.createElement('div');
   container.style.position = 'fixed';
   container.style.top = '-9999px';
   container.style.left = '-9999px';
-  container.style.width = '800px';
-  container.style.height = '1000px';
+  container.style.width = `${width}px`;
+  container.style.height = `${height}px`;
   document.body.appendChild(container);
 
   const root = createRoot(container);
@@ -85,8 +91,8 @@ export async function exportToPNGs(slides, designSystem, topicName = 'carousel')
     for (let i = 0; i < slides.length; i++) {
       await new Promise((resolve) => {
         root.render(
-          <div style={{ width: '800px', height: '1000px', position: 'relative' }}>
-            <CarouselRenderer slide={slides[i]} designSystem={designSystem} />
+          <div style={{ width: `${width}px`, height: `${height}px`, position: 'relative' }}>
+            <CarouselRenderer slide={slides[i]} designSystem={designSystem} aspectRatio={aspectRatio} />
           </div>
         );
         setTimeout(resolve, 350);
@@ -96,8 +102,8 @@ export async function exportToPNGs(slides, designSystem, topicName = 'carousel')
       if (!canvasElement) continue;
 
       const canvas = await html2canvas(canvasElement, {
-        width: 800,
-        height: 1000,
+        width: width,
+        height: height,
         scale: 2,
         useCORS: true,
         allowTaint: true,

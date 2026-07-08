@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import EditorialGrid from './composition/EditorialGrid';
 import './CarouselRenderer.css';
 
-export default function CarouselRenderer({ slide, designSystem }) {
+export default function CarouselRenderer({ slide, designSystem, aspectRatio = '4:5' }) {
   // Extract CSS variables from design system to apply dynamically to the container
   const styleVars = useMemo(() => {
     if (!designSystem) return {};
@@ -46,7 +46,13 @@ export default function CarouselRenderer({ slide, designSystem }) {
       </svg>
 
       {/* The 4:5 scaling container. CSS Container Queries or relative sizing handles responsiveness */}
-      <div className={`slide-canvas density-${slide.density?.toLowerCase() || 'medium'}`} style={styleVars}>
+      <div 
+        className={`slide-canvas density-${slide.density?.toLowerCase() || 'medium'}`} 
+        style={{
+          ...styleVars,
+          aspectRatio: aspectRatio === '1:1' ? '1 / 1' : '4 / 5'
+        }}
+      >
         {/* Dynamic mesh glow blobs */}
         <div className="mesh-glow-container" style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 1, opacity: 0.65 }}>
           <div style={{ position: 'absolute', top: '-10%', left: '-10%', width: '70%', height: '70%', borderRadius: '50%', background: 'var(--sys-primary)', filter: 'blur(80px)', opacity: 0.35 }} />
