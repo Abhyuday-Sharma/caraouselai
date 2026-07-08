@@ -8,7 +8,7 @@ export default function Header() {
       <div className="container header-content">
         <Link to="/" className="brand-logo" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <img 
-            src="/ylcggg.png" 
+            src="/ylcglogo.png" 
             alt="YoriLabs Logo" 
             style={{ 
               height: '46px', 
