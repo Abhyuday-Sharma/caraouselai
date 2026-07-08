@@ -76,12 +76,44 @@ export function ComparisonCard({ leftLabel, leftText, rightLabel, rightText }) {
 export function ListBlock({ items }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5em', width: '100%' }}>
-      {items.map((item, i) => (
-        <div key={i} style={{ display: 'flex', gap: '1em', alignItems: 'center', background: 'var(--sys-card-bg)', border: 'var(--sys-card-border, 1px solid rgba(255,255,255,0.05))', padding: '0.75em 1em', borderRadius: 'var(--sys-radius-md)' }}>
-          <CheckCircle2 style={{ color: 'var(--sys-accent)', flexShrink: 0 }} />
-          <span style={{ fontSize: '1.1em', fontWeight: '500', color: 'var(--sys-card-text, var(--sys-text))' }}>{item}</span>
-        </div>
-      ))}
+      {items.map((item, i) => {
+        let isStrikethrough = false;
+        let cleanText = item;
+        
+        if (item.startsWith('~~') && item.endsWith('~~')) {
+          isStrikethrough = true;
+          cleanText = item.slice(2, -2);
+        } else if (item.startsWith('- ')) {
+          isStrikethrough = true;
+          cleanText = item.slice(2);
+        }
+
+        const Icon = isStrikethrough ? XCircle : CheckCircle2;
+        const iconColor = isStrikethrough ? '#f87171' : 'var(--sys-accent)';
+
+        return (
+          <div key={i} style={{ 
+            display: 'flex', 
+            gap: '1em', 
+            alignItems: 'center', 
+            background: 'var(--sys-card-bg)', 
+            border: 'var(--sys-card-border, 1px solid rgba(255,255,255,0.05))', 
+            padding: '0.75em 1em', 
+            borderRadius: 'var(--sys-radius-md)',
+            opacity: isStrikethrough ? 0.65 : 1
+          }}>
+            <Icon style={{ color: iconColor, flexShrink: 0 }} size={18} />
+            <span style={{ 
+              fontSize: '1.1em', 
+              fontWeight: '500', 
+              color: 'var(--sys-card-text, var(--sys-text))',
+              textDecoration: isStrikethrough ? 'line-through' : 'none'
+            }}>
+              {cleanText}
+            </span>
+          </div>
+        );
+      })}
     </div>
   );
 }

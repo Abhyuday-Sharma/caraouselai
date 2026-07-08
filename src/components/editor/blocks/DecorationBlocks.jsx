@@ -90,7 +90,7 @@ export function UnifiedFooter({ number, total, brandText, style, isStructural })
       gap: '0.5em', 
       zIndex: 50 
     }}>
-       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', color: 'var(--sys-text-muted)' }}>
+       <div style={{ display: 'var(--sys-footer-text-display, flex)', justifyContent: 'space-between', alignItems: 'center', width: '100%', color: 'var(--sys-text-muted)' }}>
           <div style={{ fontWeight: '800', fontSize: '0.75em', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--sys-text)' }}>{brandText}</div>
           <div style={{ fontWeight: '700', fontSize: '0.75em', letterSpacing: '0.1em' }}>{number} <span style={{opacity: 0.5}}>/ {total}</span></div>
        </div>

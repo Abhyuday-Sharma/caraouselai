@@ -32,7 +32,13 @@ export async function exportToPDF(slides, designSystem, filename = 'carousel.pdf
       await new Promise((resolve) => {
         root.render(
           <div style={{ width: `${width}px`, height: `${height}px`, position: 'relative' }}>
-            <CarouselRenderer slide={slides[i]} designSystem={designSystem} aspectRatio={aspectRatio} />
+            <CarouselRenderer 
+              slide={slides[i]} 
+              designSystem={designSystem} 
+              aspectRatio={aspectRatio} 
+              slideIndex={i} 
+              totalSlides={slides.length} 
+            />
           </div>
         );
         // Wait for React to mount and layout components
@@ -92,7 +98,13 @@ export async function exportToPNGs(slides, designSystem, topicName = 'carousel',
       await new Promise((resolve) => {
         root.render(
           <div style={{ width: `${width}px`, height: `${height}px`, position: 'relative' }}>
-            <CarouselRenderer slide={slides[i]} designSystem={designSystem} aspectRatio={aspectRatio} />
+            <CarouselRenderer 
+              slide={slides[i]} 
+              designSystem={designSystem} 
+              aspectRatio={aspectRatio} 
+              slideIndex={i} 
+              totalSlides={slides.length} 
+            />
           </div>
         );
         setTimeout(resolve, 350);

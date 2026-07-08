@@ -54,6 +54,25 @@ const THEME_PRESETS = [
     colors: null
   },
   {
+    id: 'yori-labs',
+    label: 'Yori Labs',
+    emoji: '🧪',
+    desc: 'Yori Labs signature style (Vibrant purple accents on alternating high-contrast layouts)',
+    colors: {
+      Primary: '#7000ff',
+      Secondary: '#09070f',
+      Accent: '#7c3aed',
+      Background: '#f6f5fa',
+      Surface: '#ffffff',
+      Text: '#09070f',
+      TextMuted: '#5d5a75'
+    },
+    fonts: {
+      HeadingFont: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif',
+      BodyFont: '"Inter", sans-serif'
+    }
+  },
+  {
     id: 'tech-minimal',
     label: 'Tech Minimalist',
     emoji: '🍏',
@@ -350,7 +369,10 @@ export default function DashboardPage() {
     setActiveTheme(themeId);
     if (themeId === 'ai-generated') {
       if (originalDesignSystem) {
-        setDesignSystem(originalDesignSystem);
+        setDesignSystem({
+          ...originalDesignSystem,
+          id: 'ai-generated'
+        });
       }
       return;
     }
@@ -369,6 +391,7 @@ export default function DashboardPage() {
 
       return {
         ...prevSys,
+        id: themeId,
         ColorPalette: {
           ...prevSys.ColorPalette,
           ...preset.colors
@@ -1036,7 +1059,13 @@ export default function DashboardPage() {
                     style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'grab' }}
                     whileTap={{ cursor: 'grabbing' }}
                   >
-                    <CarouselRenderer slide={slides[activeSlideIndex]} designSystem={designSystem} aspectRatio={aspectRatio} />
+                    <CarouselRenderer 
+                      slide={slides[activeSlideIndex]} 
+                      designSystem={designSystem} 
+                      aspectRatio={aspectRatio} 
+                      slideIndex={activeSlideIndex} 
+                      totalSlides={slides.length} 
+                    />
                   </motion.div>
                 </AnimatePresence>
 
