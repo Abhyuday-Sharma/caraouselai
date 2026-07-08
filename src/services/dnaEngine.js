@@ -11,7 +11,7 @@ export function generateDesignDNA(brief, visualLanguage) {
     pageNumberPosition: 'bottom-right', 
     
     showBrandFooter: true,
-    brandText: '@carouselai',
+    brandText: '@yorilabs',
     brandPosition: 'bottom-left',
     
     sectionIdentifierStyle: 'pill', // pill, line-left, none

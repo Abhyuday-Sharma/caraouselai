@@ -12,7 +12,7 @@ export default function Header() {
             <ImageIcon size={20} className="logo-icon" />
             <Sparkles size={14} className="logo-sparkle" />
           </div>
-          <span className="brand-text">CarouselAI</span>
+          <span className="brand-text">YoriLabs Carousel Generator</span>
         </Link>
         <nav className="header-nav">
           <Link to="/dashboard" className="nav-link">Dashboard</Link>

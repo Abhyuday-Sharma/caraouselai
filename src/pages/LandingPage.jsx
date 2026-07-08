@@ -29,7 +29,7 @@ export default function LandingPage() {
           </h1>
           
           <p className="hero-subtitle">
-            CarouselAI understands your content and designs a professional, highly engaging Instagram carousel in seconds. No templates required.
+            YoriLabs Carousel Generator understands your content and designs a professional, highly engaging Instagram carousel in seconds. No templates required.
           </p>
 
           <div className="prompt-wrapper">
