@@ -1,17 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles, Image as ImageIcon } from 'lucide-react';
 import './Layout.css';
 
 export default function Header() {
   return (
     <header className="app-header glass">
       <div className="container header-content">
-        <Link to="/" className="brand-logo">
-          <div className="logo-icon-wrapper">
-            <ImageIcon size={20} className="logo-icon" />
-            <Sparkles size={14} className="logo-sparkle" />
-          </div>
+        <Link to="/" className="brand-logo" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <img 
+            src="/ylcggg.png" 
+            alt="YoriLabs Logo" 
+            style={{ 
+              width: '32px', 
+              height: '32px', 
+              objectFit: 'contain',
+              borderRadius: '6px'
+            }} 
+          />
           <span className="brand-text">YoriLabs Carousel Generator</span>
         </Link>
         <nav className="header-nav">
