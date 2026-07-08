@@ -10,7 +10,8 @@ const BlockTypeEnum = z.enum([
   'HeroHeading', 'SectionHeading', 'Paragraph', 'QuoteBlock',
   'StatisticCard', 'ComparisonCard', 'HighlightCard', 'ListBlock',
   'Badge', 'Footnote', 'IconGroup',
-  'TimelineFlow', 'DataDashboard', 'ChecklistGrid'
+  'TimelineFlow', 'DataDashboard', 'ChecklistGrid',
+  'BrowserMockup', 'CodeTerminalMockup'
 ]);
 
 // Definition for a Semantic Content Block
