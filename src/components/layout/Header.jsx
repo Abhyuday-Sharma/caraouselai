@@ -11,8 +11,8 @@ export default function Header() {
             src="/ylcggg.png" 
             alt="YoriLabs Logo" 
             style={{ 
-              width: '32px', 
-              height: '32px', 
+              height: '46px', 
+              width: 'auto', 
               objectFit: 'contain',
               borderRadius: '6px'
             }} 
