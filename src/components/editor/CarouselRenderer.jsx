@@ -172,33 +172,38 @@ export default function CarouselRenderer({ slide, designSystem, aspectRatio = '4
               position: 'absolute', 
               top: '2.2em', 
               right: '2.5em', 
-              background: 'rgba(0, 0, 0, 0.4)', 
-              backdropFilter: 'blur(4px)',
-              borderRadius: '9999px',
-              padding: '4px 10px',
-              color: '#ffffff',
-              fontSize: '0.7em',
-              fontWeight: 'bold',
-              zIndex: 100,
-              fontFamily: '"Inter", sans-serif'
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-end',
+              gap: '0.4em',
+              zIndex: 100 
             }}>
-              {slideIndex + 1}/{totalSlides}
-            </div>
-          )}
-          {isYoriLabs && slideIndex === 0 && (
-            <div style={{ 
-              position: 'absolute', 
-              top: '4.8em', 
-              right: '2.5em', 
-              color: 'var(--sys-accent)', 
-              fontSize: '0.65em', 
-              fontWeight: '900', 
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              zIndex: 100,
-              fontFamily: '"Outfit", sans-serif'
-            }}>
-              BRAND STORY
+              <div style={{ 
+                background: 'rgba(0, 0, 0, 0.4)', 
+                backdropFilter: 'blur(4px)',
+                borderRadius: '9999px',
+                padding: '4px 10px',
+                color: '#ffffff',
+                fontSize: '0.7em',
+                fontWeight: 'bold',
+                fontFamily: '"Inter", sans-serif',
+                lineHeight: 1
+              }}>
+                {slideIndex + 1}/{totalSlides}
+              </div>
+              {slideIndex === 0 && (
+                <div style={{ 
+                  color: 'var(--sys-accent)', 
+                  fontSize: '0.65em', 
+                  fontWeight: '900', 
+                  letterSpacing: '0.15em',
+                  textTransform: 'uppercase',
+                  fontFamily: '"Outfit", sans-serif',
+                  marginTop: '0.2em'
+                }}>
+                  BRAND STORY
+                </div>
+              )}
             </div>
           )}
           <EditorialGrid slide={slide} />
