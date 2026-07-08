@@ -29,11 +29,46 @@ export function Footnote({ text }) {
 }
 
 export function IconGroup({ icons }) {
+  if (!icons || !Array.isArray(icons) || icons.length === 0) return null;
+
   return (
-    <div style={{ display: 'flex', gap: '1.5em', color: 'var(--sys-primary)', marginBottom: '1.5em' }}>
+    <div style={{ 
+      display: 'flex', 
+      gap: '0.85em', 
+      color: 'var(--sys-primary)', 
+      width: '100%',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      marginTop: '0.4em',
+      marginBottom: '0.4em',
+      flexWrap: 'wrap'
+    }}>
       {icons.map((iconName, i) => {
-        const Icon = Icons[iconName] || Icons.Circle;
-        return <Icon key={i} size={48} />;
+        const pascalName = iconName ? iconName.charAt(0).toUpperCase() + iconName.slice(1) : '';
+        const IconComponent = Icons[pascalName] || Icons[iconName] || Icons.Sparkles;
+
+        return (
+          <div 
+            key={i} 
+            className="slide-glass-card"
+            style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              width: '2.8em', 
+              height: '2.8em', 
+              borderRadius: '50%', 
+              background: 'var(--sys-card-bg, rgba(255, 255, 255, 0.05))',
+              border: 'var(--sys-card-border, 1px solid rgba(255, 255, 255, 0.1))',
+              boxShadow: 'var(--sys-shadow-soft, 0 4px 12px rgba(0,0,0,0.05))',
+              color: 'var(--sys-primary)',
+              transition: 'all 0.2s ease',
+              flexShrink: 0
+            }}
+          >
+            <IconComponent size={20} strokeWidth={2} />
+          </div>
+        );
       })}
     </div>
   );
@@ -49,10 +84,10 @@ export function UnifiedFooter({ number, total, brandText, style, isStructural })
       left: isStructural ? 'auto' : 0, 
       right: isStructural ? 'auto' : 0,
       width: '100%',
-      padding: '1em 2.5em 1.5em 2.5em', 
+      padding: '0.75em 2.5em 1em 2.5em', 
       display: 'flex', 
       flexDirection: 'column', 
-      gap: '1em', 
+      gap: '0.5em', 
       zIndex: 50 
     }}>
        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', color: 'var(--sys-text-muted)' }}>

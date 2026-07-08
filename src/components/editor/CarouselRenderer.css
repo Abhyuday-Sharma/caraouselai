@@ -39,6 +39,32 @@
   flex-direction: column;
 }
 
+/* Typography density scaling */
+.slide-canvas.density-low {
+  font-size: clamp(11px, 2.4cqw, 22px);
+}
+
+.slide-canvas.density-medium {
+  font-size: clamp(10px, 2.2cqw, 20px);
+}
+
+.slide-canvas.density-high {
+  font-size: clamp(8.5px, 1.85cqw, 16px);
+}
+
+.slide-canvas::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 100;
+  filter: url(#noiseFilter);
+  opacity: 0.4;
+  mix-blend-mode: overlay;
+}
+
 /* Base styles for all slides inside the canvas */
 .slide-inner {
   padding: 10%; /* Relative padding */

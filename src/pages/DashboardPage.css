@@ -41,11 +41,14 @@
 }
 
 .sidebar-content {
-  padding: 20px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .placeholder-block {
@@ -113,15 +116,18 @@
 
 .json-display {
   background: var(--bg-tertiary);
-  padding: 12px;
+  padding: 10px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-color);
   font-family: monospace;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
+  line-height: 1.4;
   color: var(--brand-primary);
   white-space: pre-wrap;
   word-wrap: break-word;
-  overflow-x: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 150px;
 }
 
 .dashboard-workspace {

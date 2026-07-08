@@ -39,7 +39,7 @@ export default function PromptInput({ onSubmit, isLoading }) {
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         onKeyDown={handleKeyDown}
-        rows={4}
+        rows={3}
         disabled={isLoading}
       />
       

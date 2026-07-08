@@ -3,6 +3,71 @@
  * Converts the creative strategy (extracted in Phase 2) into a complete, professional design system.
  */
 
+// ─── Color Utility Helpers ─────────────────────────────────────
+
+/**
+ * Converts a hex color string to an rgba() CSS value.
+ * Supports 3-char (#abc) and 6-char (#aabbcc) hex strings.
+ */
+export function hexToRgba(hex, alpha = 1) {
+  let c = hex.replace('#', '');
+  if (c.length === 3) c = c.split('').map(ch => ch + ch).join('');
+  const r = parseInt(c.substring(0, 2), 16);
+  const g = parseInt(c.substring(2, 4), 16);
+  const b = parseInt(c.substring(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+/**
+ * Returns relative luminance of a hex color (0 = black, 1 = white).
+ * Used to pick white or dark text automatically for contrast.
+ */
+export function getLuminance(hex) {
+  let c = hex.replace('#', '');
+  if (c.length === 3) c = c.split('').map(ch => ch + ch).join('');
+  const r = parseInt(c.substring(0, 2), 16) / 255;
+  const g = parseInt(c.substring(2, 4), 16) / 255;
+  const b = parseInt(c.substring(4, 6), 16) / 255;
+  const toLinear = (v) => v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  return 0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b);
+}
+
+/**
+ * Returns a legible text color (white or dark) for a given background hex.
+ */
+export function getContrastText(bgHex) {
+  try {
+    return getLuminance(bgHex) > 0.4 ? '#1f2937' : '#ffffff';
+  } catch {
+    return '#1f2937';
+  }
+}
+
+/**
+ * Generates smart card styles from a primary hex color.
+ * Produces a tinted, semi-transparent card background with matching border.
+ */
+function generateSmartCardStyles(primaryHex, isDarkTheme = false) {
+  if (isDarkTheme) {
+    return {
+      Background: hexToRgba(primaryHex, 0.12),
+      BackdropFilter: 'blur(16px)',
+      Border: `1px solid ${hexToRgba(primaryHex, 0.2)}`,
+      CardText: '#ffffff',
+      CardTextMuted: 'rgba(255, 255, 255, 0.6)'
+    };
+  }
+  return {
+    Background: hexToRgba(primaryHex, 0.08),
+    BackdropFilter: 'blur(12px)',
+    Border: `1px solid ${hexToRgba(primaryHex, 0.12)}`,
+    CardText: '#1f2937',
+    CardTextMuted: '#6b7280'
+  };
+}
+
+// ─── Main Design System Generator ──────────────────────────────
+
 // Helper to generate a complete design system based on theme keywords
 export async function generateDesignSystem(strategy) {
   // Simulate network/AI processing delay
@@ -11,10 +76,12 @@ export async function generateDesignSystem(strategy) {
   const theme = (strategy.Topic || strategy.Theme || 'general').toLowerCase();
   const mood = (strategy.Mood || strategy.Tone || 'professional').toLowerCase();
 
+  const basePrimary = strategy.Colors?.Primary || '#3b82f6';
+
   // Base generic design system (fallback)
   const designSystem = {
     ColorPalette: {
-      Primary: strategy.Colors?.Primary || '#3b82f6',
+      Primary: basePrimary,
       Secondary: strategy.Colors?.Secondary || '#1e40af',
       Accent: strategy.Colors?.Accent || '#f59e0b',
       Background: '#ffffff',
@@ -36,11 +103,7 @@ export async function generateDesignSystem(strategy) {
       Style: 'Subtle noise texture with soft radial gradients',
       Pattern: 'None'
     },
-    CardStyles: {
-      Background: 'rgba(255, 255, 255, 0.8)',
-      BackdropFilter: 'blur(12px)',
-      Border: '1px solid rgba(0, 0, 0, 0.05)'
-    },
+    CardStyles: generateSmartCardStyles(basePrimary, false),
     BorderRadius: {
       Small: '4px',
       Medium: '8px',
@@ -95,6 +158,7 @@ export async function generateDesignSystem(strategy) {
       HeadingWeight: '600',
       BodyWeight: '400'
     };
+    designSystem.CardStyles = generateSmartCardStyles('#166534', false);
     designSystem.Backgrounds.Style = 'Organic textures, subtle leaf silhouettes';
     designSystem.BorderRadius = { Small: '8px', Medium: '16px', Large: '24px', Pill: '9999px' };
     designSystem.DecorativeElements.Type = 'Organic blobs and leaf motifs';
@@ -123,9 +187,9 @@ export async function generateDesignSystem(strategy) {
       BodyWeight: '300'
     };
     designSystem.CardStyles = {
+      ...generateSmartCardStyles('#d4af37', true),
       Background: 'rgba(26, 26, 26, 0.7)',
-      BackdropFilter: 'blur(20px)',
-      Border: '1px solid rgba(212, 175, 55, 0.2)'
+      Border: `1px solid ${hexToRgba('#d4af37', 0.2)}`
     };
     designSystem.BorderRadius = { Small: '0px', Medium: '2px', Large: '4px', Pill: '9999px' };
     designSystem.DecorativeElements.Type = 'Thin gold lines, subtle marble texture';
@@ -153,6 +217,7 @@ export async function generateDesignSystem(strategy) {
       HeadingWeight: '700',
       BodyWeight: '400'
     };
+    designSystem.CardStyles = generateSmartCardStyles('#00ffff', true);
     designSystem.ShadowStyles.Glow = '0 0 15px rgba(0, 255, 255, 0.5), 0 0 30px rgba(255, 0, 255, 0.3)';
     designSystem.DecorativeElements.Type = 'Glitch effects, grid lines, glowing borders';
   }
@@ -179,9 +244,9 @@ export async function generateDesignSystem(strategy) {
       BodyWeight: '400'
     };
     designSystem.CardStyles = {
-      Background: '#ffffff',
-      BackdropFilter: 'none',
-      Border: 'none'
+      ...generateSmartCardStyles('#0066cc', false),
+      Background: 'rgba(255, 255, 255, 0.85)',
+      Border: '1px solid rgba(0, 0, 0, 0.04)'
     };
     designSystem.ShadowStyles.Elevated = '0 10px 40px rgba(0, 0, 0, 0.08)';
     designSystem.BorderRadius = { Small: '8px', Medium: '18px', Large: '28px', Pill: '9999px' };

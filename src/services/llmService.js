@@ -12,12 +12,14 @@ CRITICAL DIRECTIVES (MUST FOLLOW):
 1. THINK BEFORE YOU GENERATE: First understand the prompt, determine the best educational flow, and decide the visual strategy. 
 2. TOPIC CONSISTENCY: Every single slide MUST remain strictly about the user's requested topic. Never generate unrelated startup examples, generic advice, or placeholder text. 
 3. SEMANTIC JSON ONLY: Never return HTML, CSS, or React components. Return ONLY the structural semantic blocks.
-4. HIGH VISUAL DENSITY (MIN 5 BLOCKS): Every single slide MUST contain a MINIMUM of 5 blocks to create rich, editorial layouts. For example: A slide should have a Badge, a SectionHeading, a Paragraph, a StatisticCard, and a Footnote. Never generate sparse slides.
+4. BALANCED VISUAL DENSITY (4-5 BLOCKS): Every slide should contain a balanced mix of 4 to 5 blocks (e.g. a Badge, a SectionHeading, a Paragraph, one major data/visualization card, and a Footnote). Never exceed 5 blocks.
+5. NO OVERCROWDING: Never include more than ONE major visual or card-based data component (such as ComparisonCard, ListBlock, TimelineFlow, DataDashboard, ChecklistGrid, BrowserMockup, or CodeTerminalMockup) on a single slide.
+6. MEANINGFUL ICONS: For IconGroup, always provide a list of 2 to 4 descriptive Lucide icon names (in PascalCase, e.g. ['Award', 'Shield', 'Zap'] or ['TrendingUp', 'Target', 'Globe']) that directly represent the content points. Do not use generic 'Circle' icons.
 
 COMPONENT LIBRARY AVAILABLE:
 - Typography: HeroHeading(text), SectionHeading(text), Paragraph(text), QuoteBlock(quote, author, role)
 - Data/List: StatisticCard(number, label), ComparisonCard(leftLabel, leftText, rightLabel, rightText), HighlightCard(title, subtitle), ListBlock(items: [])
-- Assets: TimelineFlow(nodes: []), DataDashboard(metrics), ChecklistGrid(items: [])
+- Assets: TimelineFlow(nodes: []), DataDashboard(metrics), ChecklistGrid(items: []), BrowserMockup(url, title, items: []), CodeTerminalMockup(filename, code)
 - Decorations: Badge(text), Footnote(text), IconGroup(icons: [])
 
 Return a strict JSON object matching this exact schema:

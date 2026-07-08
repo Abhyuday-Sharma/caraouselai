@@ -2,6 +2,7 @@ import { HeroHeading, SectionHeading, Paragraph, QuoteBlock } from './Typography
 import { StatisticCard, HighlightCard, ComparisonCard, ListBlock } from './DataBlocks';
 import { Badge, Footnote, IconGroup, UnifiedFooter, DecorativeBorder, ThematicGraphic } from './DecorationBlocks';
 import { TimelineFlow, DataDashboard, ChecklistGrid } from './AssetBlocks';
+import { BrowserMockup, CodeTerminalMockup } from './DeviceMockups';
 
 const BlockRegistry = {
   HeroHeading,
@@ -20,7 +21,9 @@ const BlockRegistry = {
   ThematicGraphic,
   TimelineFlow,
   DataDashboard,
-  ChecklistGrid
+  ChecklistGrid,
+  BrowserMockup,
+  CodeTerminalMockup
 };
 
 export default BlockRegistry;

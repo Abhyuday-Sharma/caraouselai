@@ -18,7 +18,9 @@ const BLOCK_WEIGHTS = {
   IconGroup: 3,
   TimelineFlow: 12,
   DataDashboard: 12,
-  ChecklistGrid: 10
+  ChecklistGrid: 10,
+  BrowserMockup: 12,
+  CodeTerminalMockup: 12
 };
 
 export function composeSlides(rawSlides, dna, analysis = {}) {
@@ -34,7 +36,7 @@ export function composeSlides(rawSlides, dna, analysis = {}) {
       let strata = 'body';
       
       const isHeader = ['HeroHeading', 'SectionHeading', 'Badge'].includes(block.type);
-      const isData = ['StatisticCard', 'ComparisonCard', 'HighlightCard', 'IconGroup', 'ChecklistGrid', 'DataDashboard', 'TimelineFlow'].includes(block.type);
+      const isData = ['StatisticCard', 'ComparisonCard', 'HighlightCard', 'IconGroup', 'ChecklistGrid', 'DataDashboard', 'TimelineFlow', 'BrowserMockup', 'CodeTerminalMockup'].includes(block.type);
 
       if (isHeader) strata = 'header';
       else if (isData) strata = 'data';

@@ -55,6 +55,15 @@ export function critiqueAndRefine(slides) {
         refinementsApplied.push('Removed decorative borders to reduce noise on heavy slide.');
         score += 10;
       }
+
+      // Fix Overcrowding: If slide has a major card/asset and an IconGroup, remove the IconGroup to restore balance
+      const hasMajorAsset = refinedSlide.composedBlocks.some(b => ['ComparisonCard', 'ListBlock', 'TimelineFlow', 'DataDashboard', 'ChecklistGrid', 'BrowserMockup', 'CodeTerminalMockup'].includes(b.type));
+      const hasIconGroup = refinedSlide.composedBlocks.some(b => b.type === 'IconGroup');
+      if (hasMajorAsset && hasIconGroup) {
+        refinedSlide.composedBlocks = refinedSlide.composedBlocks.filter(b => b.type !== 'IconGroup');
+        refinementsApplied.push('Removed IconGroup to prevent layout clutter alongside major data component.');
+        score += 10;
+      }
       
       // Inject CSS overrides into the grid template if needed
       if (refinedSlide.gridTemplate === 'DynamicBento' && refinedSlide.totalWeight > 25) {

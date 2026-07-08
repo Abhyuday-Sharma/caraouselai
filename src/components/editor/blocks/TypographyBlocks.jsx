@@ -37,7 +37,7 @@ export function HeroHeading({ text }) {
 
 export function SectionHeading({ text }) {
   const length = text?.length || 0;
-  const baseScale = length > 60 ? 2.0 : 2.5;
+  const baseScale = length > 40 ? 1.8 : 2.2;
 
   return (
     <h2 style={{ 
@@ -76,9 +76,9 @@ export function Paragraph({ text }) {
 
 export function QuoteBlock({ quote, author, role }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1em', borderLeft: '4px solid var(--sys-accent)', paddingLeft: '1.5em' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75em', borderLeft: '4px solid var(--sys-accent)', paddingLeft: '1.5em' }}>
       <h3 style={{ 
-        fontSize: 'clamp(1.5em, 5.5cqw, 2.5em)', 
+        fontSize: 'clamp(1.2em, 4.5cqw, 1.8em)', 
         fontStyle: 'italic',
         lineHeight: '1.4',
         margin: 0,

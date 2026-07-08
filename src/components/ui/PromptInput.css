@@ -2,10 +2,10 @@
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 16px 20px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
   transition: all var(--transition-normal);
   position: relative;
 }
@@ -52,10 +52,10 @@
 .prompt-textarea {
   width: 100%;
   resize: none;
-  font-size: 1.25rem;
-  line-height: 1.6;
+  font-size: 1.15rem;
+  line-height: 1.5;
   color: var(--text-primary);
-  min-height: 120px;
+  min-height: 80px;
 }
 
 .prompt-textarea::placeholder {
