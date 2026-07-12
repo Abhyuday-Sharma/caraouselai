@@ -1,12 +1,15 @@
 import React from 'react';
 
-// Helper to parse *text* into a highlighted span
+// Helper to parse *text* and [text] into highlighted spans
 const parseHighlight = (text) => {
   if (!text || typeof text !== 'string') return text;
-  const parts = text.split(/(\*[^*]+\*)/g);
+  const parts = text.split(/(\*[^*]+\*|\[[^\]]+\])/g);
   return parts.map((part, i) => {
     if (part.startsWith('*') && part.endsWith('*')) {
       return <span key={i} className="slide-highlight" style={{ color: 'var(--sys-accent)' }}>{part.slice(1, -1)}</span>;
+    }
+    if (part.startsWith('[') && part.endsWith(']')) {
+      return <span key={i} className="slide-solid-highlight">{part.slice(1, -1)}</span>;
     }
     return part;
   });
@@ -69,7 +72,7 @@ export function Paragraph({ text }) {
       maxWidth: '65ch', // Perfect editorial measure
       whiteSpace: 'pre-line'
     }}>
-      {text}
+      {parseHighlight(text)}
     </p>
   );
 }

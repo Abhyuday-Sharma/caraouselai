@@ -25,8 +25,9 @@ const YoriLabsLogo = () => (
   </div>
 );
 
-export default function CarouselRenderer({ slide, designSystem, aspectRatio = '4:5', slideIndex = 0, totalSlides = 1 }) {
+export default function CarouselRenderer({ slide, designSystem, aspectRatio = '4:5', slideIndex = 0, totalSlides = 1, topic = '' }) {
   const isYoriLabs = designSystem && designSystem.id === 'yori-labs';
+  const isSunsetEditorial = designSystem && designSystem.LayoutTemplate === 'sunset-editorial';
 
   // Extract CSS variables from design system to apply dynamically to the container
   const styleVars = useMemo(() => {
@@ -45,19 +46,27 @@ export default function CarouselRenderer({ slide, designSystem, aspectRatio = '4
     let cardTextMuted = designSystem.CardStyles.CardTextMuted || designSystem.ColorPalette.TextMuted;
 
     let gridPaddingTop = '2.5em';
+    let gridPaddingBottom = '0.5em';
     let footerTextDisplay = 'flex';
 
     if (isYoriLabs) {
       gridPaddingTop = '6.2em';
+      gridPaddingBottom = '2.5em';
       footerTextDisplay = 'none';
+    } else if (isSunsetEditorial) {
+      gridPaddingTop = '5.5em';
+      gridPaddingBottom = '5.5em';
+      footerTextDisplay = 'none';
+    }
 
-      // Yori Labs alternating design system based on slideIndex
-      // Index 0: Clean off-white
-      // Index 1: Dark violet/black
-      // Index 2: Vibrant purple gradient
-      // Index 3: Clean off-white
-      // Index 4: Dark violet/black
-      // Index 5: Vibrant purple gradient
+    // Yori Labs alternating design system based on slideIndex
+    // Index 0: Clean off-white
+    // Index 1: Dark violet/black
+    // Index 2: Vibrant purple gradient
+    // Index 3: Clean off-white
+    // Index 4: Dark violet/black
+    // Index 5: Vibrant purple gradient
+    if (isYoriLabs) {
       const pattern = slideIndex % 3;
       if (pattern === 0) {
         bg = '#f6f5fa';
@@ -124,6 +133,7 @@ export default function CarouselRenderer({ slide, designSystem, aspectRatio = '4
       '--sys-card-text-muted': cardTextMuted,
 
       '--sys-grid-padding-top': gridPaddingTop,
+      '--sys-grid-padding-bottom': gridPaddingBottom,
       '--sys-footer-text-display': footerTextDisplay,
     };
   }, [designSystem, slideIndex, isYoriLabs]);
@@ -142,7 +152,7 @@ export default function CarouselRenderer({ slide, designSystem, aspectRatio = '4
 
       {/* The 4:5 scaling container. CSS Container Queries or relative sizing handles responsiveness */}
       <div 
-        className={`slide-canvas density-${slide.density?.toLowerCase() || 'medium'}`} 
+        className={`slide-canvas density-${slide.density?.toLowerCase() || 'medium'} layout-${designSystem.LayoutTemplate || 'minimal'}`} 
         style={{
           ...styleVars,
           aspectRatio: aspectRatio === '1:1' ? '1 / 1' : '4 / 5'
@@ -206,7 +216,13 @@ export default function CarouselRenderer({ slide, designSystem, aspectRatio = '4
               )}
             </div>
           )}
-          <EditorialGrid slide={slide} />
+          <EditorialGrid 
+            slide={slide} 
+            designSystem={designSystem} 
+            slideIndex={slideIndex} 
+            totalSlides={totalSlides} 
+            topic={topic}
+          />
         </div>
       </div>
     </div>

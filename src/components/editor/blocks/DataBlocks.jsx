@@ -73,19 +73,27 @@ export function ComparisonCard({ leftLabel, leftText, rightLabel, rightText }) {
   );
 }
 
-export function ListBlock({ items }) {
+export function ListBlock({ items = [] }) {
+  const safeItems = Array.isArray(items) ? items : [];
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5em', width: '100%' }}>
-      {items.map((item, i) => {
+      {safeItems.map((item, i) => {
         let isStrikethrough = false;
-        let cleanText = item;
+        let cleanText = '';
         
-        if (item.startsWith('~~') && item.endsWith('~~')) {
+        if (typeof item === 'string') {
+          cleanText = item;
+        } else if (item && typeof item === 'object') {
+          cleanText = item.text || item.title || item.label || item.value || JSON.stringify(item);
+        }
+
+        if (cleanText.startsWith('~~') && cleanText.endsWith('~~')) {
           isStrikethrough = true;
-          cleanText = item.slice(2, -2);
-        } else if (item.startsWith('- ')) {
+          cleanText = cleanText.slice(2, -2);
+        } else if (cleanText.startsWith('- ')) {
           isStrikethrough = true;
-          cleanText = item.slice(2);
+          cleanText = cleanText.slice(2);
         }
 
         const Icon = isStrikethrough ? XCircle : CheckCircle2;

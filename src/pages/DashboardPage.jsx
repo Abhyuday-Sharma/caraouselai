@@ -150,24 +150,40 @@ const THEME_PRESETS = [
   },
   {
     id: 'sunset',
-    label: 'Sunset Warmth',
+    label: 'Sunset',
     emoji: '🌇',
-    desc: 'Warm terracotta background with sunset yellow accents',
+    desc: 'Premium editorial layout with a textured sand backdrop and terracotta accents',
     colors: {
-      Primary: '#c2410c',
-      Secondary: '#ea580c',
-      Accent: '#f59e0b',
-      Background: '#fff7ed',
-      Surface: '#ffedd5',
-      Text: '#431407',
-      TextMuted: '#9a3412'
+      Primary: '#be5a2a',
+      Secondary: '#1e140f',
+      Accent: '#be5a2a',
+      Background: '#f3eae1',
+      Surface: '#faf5f0',
+      Text: '#1e140f',
+      TextMuted: '#685950'
     },
     fonts: {
-      HeadingFont: '"Outfit", sans-serif',
-      BodyFont: '"Plus Jakarta Sans", sans-serif'
+      HeadingFont: '"Playfair Display", "Lora", "Georgia", serif',
+      BodyFont: '"Plus Jakarta Sans", "Inter", sans-serif'
     }
   }
 ];
+
+const LAYOUT_PRESETS = [
+  {
+    id: 'minimal',
+    label: 'Minimalist Default',
+    emoji: '📐',
+    desc: 'Standard clean dynamic layout styling'
+  },
+  {
+    id: 'sunset-editorial',
+    label: 'Sunset Editorial',
+    emoji: '📖',
+    desc: 'Top running header, left number box, subtitle line, and bottom capsule pill'
+  }
+];
+
 
 export default function DashboardPage() {
   const location = useLocation();
@@ -232,7 +248,7 @@ export default function DashboardPage() {
     setIsExporting(true);
     try {
       const topicName = aiAnalysis?.topic || 'carousel';
-      await exportToPDF(slides, designSystem, `${topicName.replace(/\s+/g, '_')}.pdf`, aspectRatio);
+      await exportToPDF(slides, designSystem, `${topicName.replace(/\s+/g, '_')}.pdf`, aspectRatio, topicName);
     } catch (error) {
       console.error("Export PDF failed", error);
     } finally {
@@ -261,7 +277,8 @@ export default function DashboardPage() {
     dna: false, 
     critic: false, 
     customizer: false,
-    theme: true
+    theme: true,
+    layoutTemplate: false
   });
   const toggleAccordion = (key) => setOpenAccordions(prev => ({ ...prev, [key]: !prev[key] }));
 
@@ -392,6 +409,7 @@ export default function DashboardPage() {
       return {
         ...prevSys,
         id: themeId,
+        LayoutTemplate: themeId === 'sunset' ? 'sunset-editorial' : (prevSys.LayoutTemplate || 'minimal'),
         ColorPalette: {
           ...prevSys.ColorPalette,
           ...preset.colors
@@ -418,6 +436,17 @@ export default function DashboardPage() {
       };
     });
   };
+
+  const handleApplyLayoutTemplate = (templateId) => {
+    setDesignSystem(prevSys => {
+      if (!prevSys) return prevSys;
+      return {
+        ...prevSys,
+        LayoutTemplate: templateId
+      };
+    });
+  };
+
 
   // Re-compose slides helper for structural changes
   const getRawSlides = (currentSlides) => {
@@ -713,6 +742,53 @@ export default function DashboardPage() {
                             </div>
                           )}
                         </div>
+                        <span style={{ fontSize: '0.72em', color: 'var(--text-muted, #9ca3af)' }}>{preset.desc}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Layout Template Accordion */}
+              <div style={{ background: 'var(--bg-tertiary)', borderRadius: 'var(--radius-md)', overflow: 'hidden', flexShrink: 0 }}>
+                <button 
+                  onClick={() => toggleAccordion('layoutTemplate')}
+                  style={{ width: '100%', display: 'flex', justifyContent: 'space-between', padding: '0.75em 1em', background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontWeight: 'bold' }}
+                >
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '0.5em' }}>
+                    <Palette size={14} /> Layout Template
+                  </span>
+                  {openAccordions.layoutTemplate ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+                </button>
+                {openAccordions.layoutTemplate && (
+                  <div style={{ padding: '0 0.75em 1.25em 0.75em', display: 'flex', flexDirection: 'column', gap: '0.5em' }}>
+                    {LAYOUT_PRESETS.map(preset => (
+                      <button
+                        key={preset.id}
+                        onClick={() => handleApplyLayoutTemplate(preset.id)}
+                        style={{
+                          width: '100%',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '0.25em',
+                          padding: '0.75em 1em',
+                          borderRadius: '8px',
+                          border: (designSystem?.LayoutTemplate || 'minimal') === preset.id 
+                            ? '2px solid var(--brand-primary, #6366f1)' 
+                            : '1px solid rgba(255,255,255,0.08)',
+                          background: (designSystem?.LayoutTemplate || 'minimal') === preset.id 
+                            ? 'rgba(99, 102, 241, 0.12)' 
+                            : 'rgba(255,255,255,0.03)',
+                          color: 'var(--text-primary, #fff)',
+                          cursor: 'pointer',
+                          textAlign: 'left',
+                          fontFamily: 'inherit',
+                          transition: 'all 0.2s ease'
+                        }}
+                      >
+                        <span style={{ fontWeight: '600', fontSize: '0.85em', display: 'flex', alignItems: 'center', gap: '0.4em' }}>
+                          {preset.emoji} {preset.label}
+                        </span>
                         <span style={{ fontSize: '0.72em', color: 'var(--text-muted, #9ca3af)' }}>{preset.desc}</span>
                       </button>
                     ))}
@@ -1033,7 +1109,7 @@ export default function DashboardPage() {
                   </button>
                 )}
 
-                <AnimatePresence initial={false} custom={direction} mode="wait">
+                <AnimatePresence initial={false} custom={direction}>
                   <motion.div
                     key={activeSlideIndex}
                     custom={direction}
@@ -1065,6 +1141,7 @@ export default function DashboardPage() {
                       aspectRatio={aspectRatio} 
                       slideIndex={activeSlideIndex} 
                       totalSlides={slides.length} 
+                      topic={aiAnalysis?.topic || ''}
                     />
                   </motion.div>
                 </AnimatePresence>

@@ -68,30 +68,124 @@ function generateSmartCardStyles(primaryHex, isDarkTheme = false) {
 
 // ─── Main Design System Generator ──────────────────────────────
 
-// Helper to generate a complete design system based on theme keywords
+const COLOR_NAMES_MAP = {
+  black: '#000000',
+  white: '#ffffff',
+  gray: '#808080',
+  grey: '#808080',
+  'dark gray': '#1a1a1a',
+  'dark grey': '#1a1a1a',
+  gold: '#d4af37',
+  silver: '#c0c0c0',
+  red: '#ef4444',
+  blue: '#3b82f6',
+  green: '#10b981',
+  yellow: '#f59e0b',
+  purple: '#8b5cf6',
+  orange: '#f97316',
+  pink: '#ec4899',
+  cream: '#fffdd0',
+  mint: '#a7f3d0'
+};
+
+function normalizeToHex(colorStr) {
+  if (!colorStr || typeof colorStr !== 'string') return '#ffffff';
+  if (colorStr.startsWith('#')) return colorStr;
+  const clean = colorStr.toLowerCase().trim();
+  if (COLOR_NAMES_MAP[clean]) return COLOR_NAMES_MAP[clean];
+  return '#ffffff';
+}
+
+function resolveIntelligentColors(strategy, theme) {
+  let c1 = strategy.Colors?.Primary ? normalizeToHex(strategy.Colors.Primary) : null;
+  let c2 = strategy.Colors?.Secondary ? normalizeToHex(strategy.Colors.Secondary) : null;
+
+  if (!c1) {
+    if (theme.includes('nature') || theme.includes('wildlife')) {
+      c1 = '#166534';
+      c2 = '#eab308';
+    } else if (theme.includes('luxury') || theme.includes('expensive')) {
+      c1 = '#050505';
+      c2 = '#d4af37';
+    } else if (theme.includes('cyber') || theme.includes('neon')) {
+      c1 = '#09090b';
+      c2 = '#00ffff';
+    } else if (theme.includes('tech') || theme.includes('minimal')) {
+      c1 = '#f5f5f7';
+      c2 = '#0066cc';
+    } else {
+      c1 = '#ffffff';
+      c2 = '#3b82f6';
+    }
+  }
+
+  const l1 = getLuminance(c1);
+  const l2 = c2 ? getLuminance(c2) : 0.5;
+
+  let bg, surface, text, textMuted, primary, secondary, accent;
+
+  if (l1 < 0.25) {
+    bg = c1;
+    if (getLuminance(bg) > 0.15) {
+      bg = '#050505';
+    }
+    surface = '#121212';
+    text = '#ffffff';
+    textMuted = 'rgba(255, 255, 255, 0.6)';
+
+    if (c2 && l2 > 0.3) {
+      accent = c2;
+    } else {
+      accent = '#d4af37';
+    }
+    primary = '#ffffff';
+    secondary = '#1a1a1a';
+  } else {
+    bg = c1;
+    if (getLuminance(bg) < 0.85) {
+      bg = '#f9fafb';
+    }
+    surface = '#ffffff';
+    text = '#1f2937';
+    textMuted = '#6b7280';
+
+    if (c2 && l2 < 0.7) {
+      accent = c2;
+    } else {
+      accent = '#3b82f6';
+    }
+    primary = '#1f2937';
+    secondary = '#f3f4f6';
+  }
+
+  return { bg, surface, text, textMuted, primary, secondary, accent };
+}
+
 export async function generateDesignSystem(strategy) {
   // Simulate network/AI processing delay
-  await new Promise(resolve => setTimeout(resolve, 2000));
+  await new Promise(resolve => setTimeout(resolve, 1500));
 
   const theme = (strategy.Topic || strategy.Theme || 'general').toLowerCase();
   const mood = (strategy.Mood || strategy.Tone || 'professional').toLowerCase();
 
-  const basePrimary = strategy.Colors?.Primary || '#3b82f6';
+  const resolvedColors = resolveIntelligentColors(strategy, theme);
+  const isDark = getLuminance(resolvedColors.bg) < 0.4;
 
-  // Base generic design system (fallback)
   const designSystem = {
     ColorPalette: {
-      Primary: basePrimary,
-      Secondary: strategy.Colors?.Secondary || '#1e40af',
-      Accent: strategy.Colors?.Accent || '#f59e0b',
-      Background: '#ffffff',
-      Surface: '#f3f4f6',
-      Text: '#1f2937',
-      TextMuted: '#6b7280'
+      Primary: resolvedColors.primary,
+      Secondary: resolvedColors.secondary,
+      Accent: resolvedColors.accent,
+      Background: resolvedColors.bg,
+      Surface: resolvedColors.surface,
+      Text: resolvedColors.text,
+      TextMuted: resolvedColors.textMuted
     },
     GradientSystem: {
-      BackgroundGlow: 'radial-gradient(circle at top right, rgba(59, 130, 246, 0.1), transparent 50%)',
-      CardGradient: 'linear-gradient(145deg, #ffffff, #f9fafb)'
+      BackgroundGlow: `radial-gradient(circle at top right, ${hexToRgba(resolvedColors.accent, 0.1)}, transparent 50%)`,
+      CardGradient: isDark 
+        ? `linear-gradient(145deg, ${resolvedColors.secondary}, ${resolvedColors.bg})` 
+        : `linear-gradient(145deg, #ffffff, ${resolvedColors.secondary})`
     },
     TypographyPairing: {
       HeadingFont: '"Inter", sans-serif',
@@ -103,7 +197,7 @@ export async function generateDesignSystem(strategy) {
       Style: 'Subtle noise texture with soft radial gradients',
       Pattern: 'None'
     },
-    CardStyles: generateSmartCardStyles(basePrimary, false),
+    CardStyles: generateSmartCardStyles(resolvedColors.accent, isDark),
     BorderRadius: {
       Small: '4px',
       Medium: '8px',
@@ -113,7 +207,7 @@ export async function generateDesignSystem(strategy) {
     ShadowStyles: {
       Soft: '0 4px 20px rgba(0, 0, 0, 0.05)',
       Elevated: '0 10px 30px rgba(0, 0, 0, 0.1)',
-      Glow: '0 0 20px rgba(59, 130, 246, 0.3)'
+      Glow: isDark ? `0 0 20px ${hexToRgba(resolvedColors.accent, 0.3)}` : '0 4px 15px rgba(0,0,0,0.05)'
     },
     DecorativeElements: {
       Type: 'Minimalist geometric shapes',
@@ -167,17 +261,18 @@ export async function generateDesignSystem(strategy) {
 
   // 2. Luxury Theme
   else if (theme.includes('luxury') || theme.includes('expensive')) {
+    const goldColor = resolvedColors.accent !== '#ffffff' ? resolvedColors.accent : '#d4af37';
     designSystem.ColorPalette = {
-      Primary: '#000000',
+      Primary: '#ffffff', // Keep headers white for clean premium editorial text contrast
       Secondary: '#1a1a1a',
-      Accent: '#d4af37', // Gold
+      Accent: goldColor, // Gold accents
       Background: '#050505',
       Surface: '#121212',
       Text: '#ffffff',
       TextMuted: '#a3a3a3'
     };
     designSystem.GradientSystem = {
-      BackgroundGlow: 'radial-gradient(circle at center, rgba(212, 175, 55, 0.08), transparent 70%)',
+      BackgroundGlow: `radial-gradient(circle at center, ${hexToRgba(goldColor, 0.08)}, transparent 70%)`,
       CardGradient: 'linear-gradient(145deg, #1a1a1a, #0a0a0a)'
     };
     designSystem.TypographyPairing = {
@@ -187,9 +282,9 @@ export async function generateDesignSystem(strategy) {
       BodyWeight: '300'
     };
     designSystem.CardStyles = {
-      ...generateSmartCardStyles('#d4af37', true),
+      ...generateSmartCardStyles(goldColor, true),
       Background: 'rgba(26, 26, 26, 0.7)',
-      Border: `1px solid ${hexToRgba('#d4af37', 0.2)}`
+      Border: `1px solid ${hexToRgba(goldColor, 0.2)}`
     };
     designSystem.BorderRadius = { Small: '0px', Medium: '2px', Large: '4px', Pill: '9999px' };
     designSystem.DecorativeElements.Type = 'Thin gold lines, subtle marble texture';
@@ -199,8 +294,8 @@ export async function generateDesignSystem(strategy) {
   // 3. Cyberpunk Theme
   else if (theme.includes('cyberpunk') || mood.includes('neon')) {
     designSystem.ColorPalette = {
-      Primary: '#0ff', // Cyan
-      Secondary: '#f0f', // Magenta
+      Primary: '#0ff',
+      Secondary: '#f0f',
       Accent: '#ff003c',
       Background: '#09090b',
       Surface: '#18181b',
@@ -253,13 +348,60 @@ export async function generateDesignSystem(strategy) {
     designSystem.DecorativeElements.Type = 'Highly polished 3D hardware renders or minimal UI mockups';
     designSystem.LayoutStyle.Type = 'Bento grid, extreme precision, center focused';
   }
+  
+  // 5. Sunset Theme
+  else if (theme.includes('sunset') || mood.includes('sunset')) {
+    designSystem.ColorPalette = {
+      Primary: '#be5a2a',
+      Secondary: '#1e140f',
+      Accent: '#be5a2a',
+      Background: '#f3eae1',
+      Surface: '#faf5f0',
+      Text: '#1e140f',
+      TextMuted: '#685950'
+    };
+    designSystem.GradientSystem = {
+      BackgroundGlow: 'none',
+      CardGradient: 'linear-gradient(145deg, #faf5f0, #f3eae1)'
+    };
+    designSystem.TypographyPairing = {
+      HeadingFont: '"Playfair Display", "Lora", "Georgia", serif',
+      BodyFont: '"Plus Jakarta Sans", "Inter", sans-serif',
+      HeadingWeight: '600',
+      BodyWeight: '400'
+    };
+    designSystem.CardStyles = generateSmartCardStyles('#be5a2a', false);
+    designSystem.Backgrounds.Style = 'Warm editorial sand paper texture';
+    designSystem.BorderRadius = { Small: '6px', Medium: '12px', Large: '18px', Pill: '9999px' };
+    designSystem.LayoutTemplate = 'sunset-editorial';
+  }
 
-  // Add more dynamic generation mapping based on explicit color overrides
+  // Apply intelligent accent selection based on background context to guarantee contrast
   if (strategy.Colors && strategy.Colors.Primary) {
-    // If the strategy forced a color, blend it into the accent/primary
-    // This simulates AI adapting the theme to specific color requests
-    // (A real AI would adjust the hex codes smoothly)
-    designSystem.ColorPalette.Accent = strategy.Colors.Primary; 
+    const pColor = normalizeToHex(strategy.Colors.Primary);
+    const sColor = strategy.Colors.Secondary ? normalizeToHex(strategy.Colors.Secondary) : null;
+    
+    const lp = getLuminance(pColor);
+    const ls = sColor ? getLuminance(sColor) : 0.5;
+    const isBgDark = getLuminance(designSystem.ColorPalette.Background) < 0.4;
+
+    if (isBgDark) {
+      if (lp > 0.35) {
+        designSystem.ColorPalette.Accent = pColor;
+      } else if (sColor && ls > 0.35) {
+        designSystem.ColorPalette.Accent = sColor;
+      } else {
+        designSystem.ColorPalette.Accent = '#d4af37';
+      }
+    } else {
+      if (lp < 0.7) {
+        designSystem.ColorPalette.Accent = pColor;
+      } else if (sColor && ls < 0.7) {
+        designSystem.ColorPalette.Accent = sColor;
+      } else {
+        designSystem.ColorPalette.Accent = '#0066cc';
+      }
+    }
   }
 
   return designSystem;

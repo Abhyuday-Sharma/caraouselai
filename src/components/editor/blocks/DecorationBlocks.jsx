@@ -1,5 +1,19 @@
 import React from 'react';
-import * as Icons from 'lucide-react';
+import {
+  Sparkles, Heart, MessageCircle, Share2, Bookmark, Award, Shield, Zap, TrendingUp, Target, Globe, Clock, 
+  Settings, Gem, DollarSign, BookOpen, ThumbsUp, Star, Activity, Check, HelpCircle, Info, Lock, Unlock, 
+  User, Users, Video, Phone, Mail, MapPin, Calendar, Search, Bell, Menu, X, ChevronRight, ChevronLeft, 
+  ArrowRight, Play, Volume2, Briefcase, Compass, Gift, HeartHandshake, Lightbulb, LineChart, Map, 
+  PieChart, Smile, Trophy
+} from 'lucide-react';
+
+const IconMap = {
+  Sparkles, Heart, MessageCircle, Share2, Bookmark, Award, Shield, Zap, TrendingUp, Target, Globe, Clock,
+  Settings, Gear: Settings, Gem, Diamond: Gem, DollarSign, BookOpen, ThumbsUp, Star, Activity, Check, 
+  HelpCircle, Info, Lock, Unlock, User, Users, Video, Phone, Mail, MapPin, Calendar, Search, Bell, 
+  Menu, X, ChevronRight, ChevronLeft, ArrowRight, Play, Volume2, Briefcase, Compass, Gift, 
+  HeartHandshake, Lightbulb, LineChart, Map, PieChart, Smile, Trophy
+};
 
 export function Badge({ text }) {
   return (
@@ -44,8 +58,9 @@ export function IconGroup({ icons }) {
       flexWrap: 'wrap'
     }}>
       {icons.map((iconName, i) => {
-        const pascalName = iconName ? iconName.charAt(0).toUpperCase() + iconName.slice(1) : '';
-        const IconComponent = Icons[pascalName] || Icons[iconName] || Icons.Sparkles;
+        const name = typeof iconName === 'string' ? iconName : '';
+        const pascalName = name ? name.charAt(0).toUpperCase() + name.slice(1) : '';
+        const IconComponent = IconMap[pascalName] || IconMap[name] || IconMap[name.toLowerCase()] || Sparkles;
 
         return (
           <div 

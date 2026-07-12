@@ -101,3 +101,44 @@
 .slide-accent-text {
   color: var(--sys-accent);
 }
+
+/* Solid background highlight block */
+.slide-solid-highlight {
+  background-color: var(--sys-accent);
+  color: #ffffff; /* Contrast text inside the filled orange block */
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  font-weight: bold;
+  display: inline-block;
+  line-height: 1.2;
+}
+
+/* Customizations for Sunset Editorial Layout Template */
+.slide-canvas.layout-sunset-editorial {
+  --sys-badge-bg: transparent;
+  --sys-badge-color: var(--sys-accent);
+  --sys-badge-padding: 0;
+  --sys-badge-margin: 0.4em;
+  
+  /* Ensure a textured editorial background */
+  background-color: var(--sys-bg);
+  background-image: none !important; /* Turn off glowing meshes */
+}
+
+/* Hide background glow blobs for the pure editorial feel */
+.slide-canvas.layout-sunset-editorial .mesh-glow-container {
+  display: none !important;
+}
+
+/* Editorial typography tweaks for Sunset Editorial Layout */
+.slide-canvas.layout-sunset-editorial h1,
+.slide-canvas.layout-sunset-editorial h2 {
+  font-family: var(--sys-font-heading);
+  letter-spacing: -0.01em; /* Serif headers shouldn't be too tight */
+}
+
+.slide-canvas.layout-sunset-editorial p {
+  color: var(--sys-text-muted);
+  font-family: var(--sys-font-body);
+  line-height: 1.6;
+}

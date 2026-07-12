@@ -8,7 +8,7 @@ import CarouselRenderer from '../components/editor/CarouselRenderer';
  * Renders each slide off-screen to a fixed 800x1000 viewport,
  * captures it via html2canvas, and compiles a multi-page PDF.
  */
-export async function exportToPDF(slides, designSystem, filename = 'carousel.pdf', aspectRatio = '4:5') {
+export async function exportToPDF(slides, designSystem, filename = 'carousel.pdf', aspectRatio = '4:5', topic = '') {
   const width = 800;
   const height = aspectRatio === '1:1' ? 800 : 1000;
 
@@ -38,6 +38,7 @@ export async function exportToPDF(slides, designSystem, filename = 'carousel.pdf
               aspectRatio={aspectRatio} 
               slideIndex={i} 
               totalSlides={slides.length} 
+              topic={topic}
             />
           </div>
         );
@@ -104,6 +105,7 @@ export async function exportToPNGs(slides, designSystem, topicName = 'carousel',
               aspectRatio={aspectRatio} 
               slideIndex={i} 
               totalSlides={slides.length} 
+              topic={topicName}
             />
           </div>
         );

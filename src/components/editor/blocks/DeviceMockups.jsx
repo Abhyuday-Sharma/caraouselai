@@ -76,22 +76,30 @@ export function BrowserMockup({ url = 'https://example.com', title = 'Dashboard 
           {title}
         </h4>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5em' }}>
-          {items.map((item, index) => (
-            <div key={index} style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5em',
-              fontSize: '0.85em',
-              padding: '0.5em 0.75em',
-              background: 'var(--sys-surface, rgba(0,0,0,0.02))',
-              borderRadius: '4px',
-              borderLeft: '3px solid var(--sys-primary)',
-              color: 'var(--sys-card-text, var(--sys-text))'
-            }}>
-              <span style={{ fontWeight: 'bold', color: 'var(--sys-primary)' }}>{index + 1}.</span>
-              <span>{item}</span>
-            </div>
-          ))}
+          {Array.isArray(items) && items.map((item, index) => {
+            let itemText = '';
+            if (typeof item === 'string') {
+              itemText = item;
+            } else if (item && typeof item === 'object') {
+              itemText = item.text || item.title || item.label || item.value || JSON.stringify(item);
+            }
+            return (
+              <div key={index} style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5em',
+                fontSize: '0.85em',
+                padding: '0.5em 0.75em',
+                background: 'var(--sys-surface, rgba(0,0,0,0.02))',
+                borderRadius: '4px',
+                borderLeft: '3px solid var(--sys-primary)',
+                color: 'var(--sys-card-text, var(--sys-text))'
+              }}>
+                <span style={{ fontWeight: 'bold', color: 'var(--sys-primary)' }}>{index + 1}.</span>
+                <span>{itemText}</span>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
